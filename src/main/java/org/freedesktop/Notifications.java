@@ -1,4 +1,4 @@
-package com.github.purejava;
+package org.freedesktop;
 
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.UInt32;

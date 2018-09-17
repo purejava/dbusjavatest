@@ -14,11 +14,11 @@ public class SendDBusNotification {
     public static void main(String[] args) {
         try {
             DBusConnection conn = DBusConnection.getConnection(DBusConnection.SESSION);
-            Notifications notify = conn.getRemoteObject("org.freedesktop.Notifications",
+            Notifications notifications = conn.getRemoteObject("org.freedesktop.Notifications",
                     "/org/freedesktop/Notifications", Notifications.class);
             Map<String, Variant<Byte>> hints = new HashMap<>();
             hints.put("urgency", new Variant<>((byte) 2));
-            notify.Notify("",
+            notifications.Notify("",
                     new UInt32(0),
                     "",
                     "This is a test",

@@ -22,7 +22,7 @@ public class SendDBusNotification {
                     new UInt32(0),
                     "",
                     "This is a test",
-                    "Again, this is only a test",
+                    "This is the body of the notification",
                     new LinkedList<String>(),
                     hints,
                     -1);

@@ -6,7 +6,7 @@ import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.Position;
 import org.freedesktop.dbus.Struct;
 
-public final class Struct1 extends Struct {
+public final class Struct2 extends Struct {
     @Position(0)
     public final DBusInterface a;
     @Position(1)
@@ -16,7 +16,7 @@ public final class Struct1 extends Struct {
     @Position(3)
     public final CharSequence d;
 
-    public Struct1(DBusInterface a, List<Byte> b, List<Byte> c, CharSequence d) {
+    public Struct2(DBusInterface a, List<Byte> b, List<Byte> c, CharSequence d) {
         this.a = a;
         this.b = b;
         this.c = c;

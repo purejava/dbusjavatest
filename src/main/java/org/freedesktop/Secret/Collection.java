@@ -1,12 +1,12 @@
 package org.freedesktop.Secret;
 
+import java.util.List;
+import java.util.Map;
+
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
-
-import java.util.List;
-import java.util.Map;
 
 public interface Collection extends DBusInterface {
     public static class ItemCreated extends DBusSignal {
@@ -38,8 +38,8 @@ public interface Collection extends DBusInterface {
 
     public DBusInterface Delete();
 
-    public List<DBusInterface> SearchItems(Map<String, String> attributes);
+    public List<DBusInterface> SearchItems(Map<CharSequence, CharSequence> attributes);
 
-    public Pair<DBusInterface, DBusInterface> CreateItem(Map<String, Variant> properties, Struct1 secret, boolean replace);
+    public Pair<DBusInterface, DBusInterface> CreateItem(Map<CharSequence, Variant> properties, Struct2 secret, boolean replace);
 
 }

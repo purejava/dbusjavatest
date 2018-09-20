@@ -1,12 +1,12 @@
 package org.freedesktop.Secret;
 
+import java.util.List;
+import java.util.Map;
+
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusSignal;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
-
-import java.util.List;
-import java.util.Map;
 
 public interface Service extends DBusInterface {
     public static class CollectionCreated extends DBusSignal {
@@ -36,11 +36,11 @@ public interface Service extends DBusInterface {
         }
     }
 
-    public Pair<Variant, DBusInterface> OpenSession(String algorithm, Variant input);
+    public Pair<Variant, DBusInterface> OpenSession(CharSequence algorithm, Variant input);
 
-    public Pair<DBusInterface, DBusInterface> CreateCollection(Map<String, Variant> properties, String alias);
+    public Pair<DBusInterface, DBusInterface> CreateCollection(Map<CharSequence, Variant> properties, CharSequence alias);
 
-    public Pair<List<DBusInterface>, List<DBusInterface>> SearchItems(Map<String, String> attributes);
+    public Pair<List<DBusInterface>, List<DBusInterface>> SearchItems(Map<CharSequence, CharSequence> attributes);
 
     public Pair<List<DBusInterface>, DBusInterface> Unlock(List<DBusInterface> objects);
 
@@ -52,8 +52,8 @@ public interface Service extends DBusInterface {
 
     public Map<DBusInterface, Struct1> GetSecrets(List<DBusInterface> items, DBusInterface session);
 
-    public DBusInterface ReadAlias(String name);
+    public DBusInterface ReadAlias(CharSequence name);
 
-    public void SetAlias(String name, DBusInterface collection);
+    public void SetAlias(CharSequence name, DBusInterface collection);
 
 }

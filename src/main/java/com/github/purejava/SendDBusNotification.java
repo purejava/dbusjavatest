@@ -12,8 +12,9 @@ import java.util.Map;
 
 public class SendDBusNotification {
     public static void main(String[] args) {
+        DBusConnection conn = null;
         try {
-            DBusConnection conn = DBusConnection.getConnection(DBusConnection.SESSION);
+            conn = DBusConnection.getConnection(DBusConnection.SESSION);
             Notifications notifications = conn.getRemoteObject("org.freedesktop.Notifications",
                     "/org/freedesktop/Notifications", Notifications.class);
             Map<String, Variant<Byte>> hints = new HashMap<>();
@@ -28,6 +29,8 @@ public class SendDBusNotification {
                     -1);
         } catch (DBusException e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) conn.disconnect();
         }
     }
 }

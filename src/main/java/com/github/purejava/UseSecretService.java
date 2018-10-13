@@ -21,6 +21,12 @@ public class UseSecretService {
                     new Variant<>(""));
             DBusInterface dbusSession = pair.b;
             String objectPath = "/org/freedesktop/secrets/collection/login";
+            DBus.Properties collectionProperties = conn.getRemoteObject("org.freedesktop.secrets", objectPath, DBus.Properties.class);
+            Boolean locked = collectionProperties.Get("org.freedesktop.Secret.Collection", "Locked");
+            if (locked) {
+                System.out.println("Keyring is locked.");
+                return;
+            }
             Collection collection = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Collection.class);
             List<DBus.Properties> objectList = collection.SearchItems(new HashMap());
             for (DBus.Properties p : objectList) {

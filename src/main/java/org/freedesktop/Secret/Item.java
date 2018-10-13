@@ -6,8 +6,8 @@ public interface Item extends DBusInterface {
 
     public DBusInterface Delete();
 
-    public Struct3 GetSecret(DBusInterface session);
+    public Secret GetSecret(DBusInterface session);
 
-    public void SetSecret(Struct4 secret);
+    public void SetSecret(Secret secret);
 
 }

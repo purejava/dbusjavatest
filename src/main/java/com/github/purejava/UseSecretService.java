@@ -1,15 +1,13 @@
 package com.github.purejava;
 
 import org.freedesktop.DBus;
-import org.freedesktop.Secret.Item;
-import org.freedesktop.Secret.Pair;
-import org.freedesktop.Secret.Secret;
-import org.freedesktop.Secret.Service;
+import org.freedesktop.Secret.*;
 import org.freedesktop.dbus.DBusConnection;
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class UseSecretService {
@@ -22,16 +20,21 @@ public class UseSecretService {
             Pair<Variant, DBusInterface> pair = service.OpenSession("plain",
                     new Variant<>(""));
             DBusInterface dbusSession = pair.b;
-            String objectPath = "/org/freedesktop/secrets/collection/login/22";
-            DBus.Properties prop = (DBus.Properties) conn.getRemoteObject("org.freedesktop.secrets", objectPath, DBus.Properties.class);
-            String label = (String) prop.Get("org.freedesktop.Secret.Item", "Label");
-            System.out.println("Label = " + label);
+            String objectPath = "/org/freedesktop/secrets/collection/login";
+            Collection collection = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Collection.class);
+            List<DBus.Properties> objectList = collection.SearchItems(new HashMap());
+            for (DBus.Properties p : objectList) {
+                objectPath = p.toString().split(":")[2];
+                DBus.Properties prop = conn.getRemoteObject("org.freedesktop.secrets", objectPath, DBus.Properties.class);
+                String label = prop.Get("org.freedesktop.Secret.Item", "Label");
+                System.out.println("Label = " + label);
 
-            Item item = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Item.class);
-            Secret secret = item.GetSecret(dbusSession);
-            List<Byte> passwordAsByteArray = secret.value;
-            System.out.println("Password = " + byteListToString(passwordAsByteArray));
-
+                Item item = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Item.class);
+                Secret secret = item.GetSecret(dbusSession);
+                List<Byte> passwordAsByteArray = secret.value;
+                System.out.println("Password = " + byteListToString(passwordAsByteArray));
+                System.out.println();
+            }
         } catch (DBusException e) {
             e.printStackTrace();
         } finally {

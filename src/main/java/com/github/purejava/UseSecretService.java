@@ -2,30 +2,46 @@ package com.github.purejava;
 
 import org.freedesktop.DBus;
 import org.freedesktop.Secret.*;
-import org.freedesktop.dbus.DBusConnection;
-import org.freedesktop.dbus.DBusInterface;
-import org.freedesktop.dbus.Variant;
+import org.freedesktop.dbus.*;
 import org.freedesktop.dbus.exceptions.DBusException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class UseSecretService {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException, DBusException {
         DBusConnection conn = null;
+        DBusSigHandler<Prompt.Completed> interfacesAddedSignalHandler = null;
         try {
             conn = DBusConnection.getConnection(DBusConnection.SESSION);
+            interfacesAddedSignalHandler = new DBusSigHandler<Prompt.Completed>() {
+                @Override
+                public void handle(Prompt.Completed signal) {
+                    if (signal.dismissed) System.out.println("Prompt dismissed"); else System.out.println("Password was entered");
+                }
+            };
+            conn.addSigHandler(Prompt.Completed.class, interfacesAddedSignalHandler);
             Service service = conn.getRemoteObject("org.freedesktop.secrets",
                     "/org/freedesktop/secrets", Service.class);
-            Pair<Variant, DBusInterface> pair = service.OpenSession("plain",
+            Pair<Variant, Path> pair = service.OpenSession("plain",
                     new Variant<>(""));
-            DBusInterface dbusSession = pair.b;
+            Path dbusSession = pair.b;
             String objectPath = "/org/freedesktop/secrets/collection/login";
             DBus.Properties collectionProperties = conn.getRemoteObject("org.freedesktop.secrets", objectPath, DBus.Properties.class);
             Boolean locked = collectionProperties.Get("org.freedesktop.Secret.Collection", "Locked");
             if (locked) {
+                Collection collection = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Collection.class);
                 System.out.println("Keyring is locked.");
-                return;
+                List<Path> list = new ArrayList<>();
+                list.add(new Path(objectPath));
+                Pair<List<Path>, Path> unlockResult = service.Unlock(list);
+                String path = unlockResult.b.getPath();
+                if (!"/".equals(path)) {
+                    Prompt prompt = conn.getRemoteObject("org.freedesktop.secrets", path, Prompt.class);
+                    prompt.Prompt("");
+                    Thread.sleep(10000);
+                }
             }
             Collection collection = conn.getRemoteObject("org.freedesktop.secrets", objectPath, Collection.class);
             List<DBus.Properties> objectList = collection.SearchItems(new HashMap());
@@ -44,7 +60,10 @@ public class UseSecretService {
         } catch (DBusException e) {
             e.printStackTrace();
         } finally {
-            if (conn != null) conn.disconnect();
+            if (conn != null && interfacesAddedSignalHandler != null) {
+                conn.disconnect();
+                conn.removeSigHandler(Prompt.Completed.class, interfacesAddedSignalHandler);
+            }
         }
     }
     private static String byteListToString(List<Byte> l) {

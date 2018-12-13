@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.freedesktop.dbus.DBusInterface;
 import org.freedesktop.dbus.DBusSignal;
+import org.freedesktop.dbus.Path;
 import org.freedesktop.dbus.Variant;
 import org.freedesktop.dbus.exceptions.DBusException;
 
@@ -36,24 +37,24 @@ public interface Service extends DBusInterface {
         }
     }
 
-    public Pair<Variant, DBusInterface> OpenSession(CharSequence algorithm, Variant input);
+    public Pair<Variant, Path> OpenSession(String algorithm, Variant input);
 
-    public Pair<DBusInterface, DBusInterface> CreateCollection(Map<CharSequence, Variant> properties, CharSequence alias);
+    public Pair<Path, Path> CreateCollection(Map<String, Variant> properties, String alias);
 
-    public Pair<List<DBusInterface>, List<DBusInterface>> SearchItems(Map<CharSequence, CharSequence> attributes);
+    public Pair<List<Path>, List<Path>> SearchItems(Map<String, String> attributes);
 
-    public Pair<List<DBusInterface>, DBusInterface> Unlock(List<DBusInterface> objects);
+    public Pair<List<Path>, Path> Unlock(List<Path> objects);
 
-    public Pair<List<DBusInterface>, DBusInterface> Lock(List<DBusInterface> objects);
+    public Pair<List<Path>, Path> Lock(List<Path> objects);
 
     public void LockService();
 
-    public DBusInterface ChangeLock(DBusInterface collection);
+    public Collection ChangeLock(Collection collection);
 
-    public Map<DBusInterface, Struct1> GetSecrets(List<DBusInterface> items, DBusInterface session);
+    public Map<Item, Secret> GetSecrets(List<Path> items, Path session);
 
-    public DBusInterface ReadAlias(CharSequence name);
+    public Collection ReadAlias(String name);
 
-    public void SetAlias(CharSequence name, DBusInterface collection);
+    public void SetAlias(String name, Collection collection);
 
 }

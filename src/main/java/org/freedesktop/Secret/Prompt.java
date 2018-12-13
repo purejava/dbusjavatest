@@ -17,7 +17,7 @@ public interface Prompt extends DBusInterface {
         }
     }
 
-    public void Prompt(CharSequence window_id);
+    public void Prompt(String window_id);
 
     public void Dismiss();
 

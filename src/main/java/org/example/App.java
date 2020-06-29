@@ -9,7 +9,6 @@ import org.kde.KWallet;
 import java.io.IOException;
 
 import static java.lang.System.exit;
-import static org.kde.KWallet.*;
 
 public class App
 {
@@ -29,7 +28,7 @@ public class App
                 };
                 KWallet service = connection.getRemoteObject("org.kde.kwalletd5",
                         "/modules/kwalletd5", KWallet.class);
-                connection.addSigHandler(FolderListUpdated.class, interfacesAddedSignalHandler);
+                connection.addSigHandler(KWallet.FolderListUpdated.class, interfacesAddedSignalHandler);
                 String wallet = "kdewallet";
                 int wId = 0;
                 String appid = "Tester";

@@ -44,7 +44,7 @@ public class SignalHandler implements DBusSigHandler {
                 for (Class sc : signals) {
                     if (!registered.contains(sc)) {
                         connection.addSigHandler(sc, this);
-                        log.info("Connecting Signal " + sc.toString());
+                        System.out.println("Connecting Signal " + sc.toString());
                         this.registered.add(sc);
                     }
                 }

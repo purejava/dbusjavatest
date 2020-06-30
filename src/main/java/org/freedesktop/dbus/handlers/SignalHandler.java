@@ -72,39 +72,39 @@ public class SignalHandler implements DBusSigHandler {
 
     @Override
     public void handle(DBusSignal s) {
-        log.warn("HANDLE");
+        System.out.println( "HANDLE");
         Collections.rotate(Arrays.asList(handled), 1);
         handled[0] = s;
         count += 1;
 
         if (s instanceof KWallet.WalletOpened) {
             KWallet.WalletOpened wo = (KWallet.WalletOpened) s;
-            log.info("KWallet.WalletOpened: " + wo.wallet);
+            System.out.println("KWallet.WalletOpened: " + wo.wallet);
         } else if (s instanceof KWallet.WalletAsyncOpened) {
             KWallet.WalletAsyncOpened wo = (KWallet.WalletAsyncOpened) s;
-            log.info("KWallet.WalletAsyncOpened: " + wo.tId + " / " + wo.handle);
+            System.out.println("KWallet.WalletAsyncOpened: " + wo.tId + " / " + wo.handle);
         } else if (s instanceof KWallet.WalletDeleted) {
             KWallet.WalletDeleted wd = (KWallet.WalletDeleted) s;
-            log.info("KWallet.WalletDeleted: " + wd.wallet);
+            System.out.println("KWallet.WalletDeleted: " + wd.wallet);
         } else if (s instanceof KWallet.WalletClosed) {
             KWallet.WalletClosed wc = (KWallet.WalletClosed) s;
-            log.info("KWallet.WalletClosed: " + wc.wallet);
+            System.out.println("KWallet.WalletClosed: " + wc.wallet);
         } else if (s instanceof KWallet.AllWalletsClosed) {
-            log.info("KWallet.AllWalletsClosed: " + s.getPath());
-        } else if (s instanceof KWallet.FolderListUpdated) {
-            KWallet.FolderListUpdated flu = (KWallet.FolderListUpdated) s;
-            log.info("KWallet.FolderListUpdated: " + flu.wallet);
+            System.out.println("KWallet.AllWalletsClosed: " + s.getPath());
+        } else if (s instanceof KWallet.folderListUpdated) {
+            KWallet.folderListUpdated flu = (KWallet.folderListUpdated) s;
+            System.out.println("KWallet.FolderListUpdated: " + flu.wallet);
         } else if (s instanceof KWallet.FolderUpdated) {
             KWallet.FolderUpdated fu = (KWallet.FolderUpdated) s;
-            log.info("KWallet.FolderUpdated: " + fu.a + " / " + fu.b);
+            System.out.println("KWallet.FolderUpdated: " + fu.a + " / " + fu.b);
         } else if (s instanceof KWallet.ApplicationDisconnected) {
             KWallet.ApplicationDisconnected ad = (KWallet.ApplicationDisconnected) s;
-            log.info("KWallet.ApplicationDisconnected: " + ad.application + " / "+ ad.wallet);
+            System.out.println("KWallet.ApplicationDisconnected: " + ad.application + " / "+ ad.wallet);
         } else if (s instanceof KWallet.WalletListDirty) {
-            log.info("KWallet.WalletListDirty: " + s.getPath());
+            System.out.println("KWallet.WalletListDirty: " + s.getPath());
         } else if (s instanceof KWallet.WalletCreated) {
             KWallet.WalletCreated wc = (KWallet.WalletCreated) s;
-            log.info("KWallet.WalletCreated: " + wc.wallet);
+            System.out.println("KWallet.WalletCreated: " + wc.wallet);
         } else {
             log.warn("Handled unknown signal: " + s.getClass().toString() + " {" + s.toString() + "}");
         }
@@ -163,7 +163,7 @@ public class SignalHandler implements DBusSigHandler {
         int init = getHandledSignals(s, path).size();
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        log.info("await signal " + s.getName() + "(" + path + ") within " + timeout.getSeconds() + " seconds.");
+        System.out.println("await signal " + s.getName() + "(" + path + ") within " + timeout.getSeconds() + " seconds.");
 
         final Future<S> handler = executor.submit((Callable) () -> {
             int await = init;

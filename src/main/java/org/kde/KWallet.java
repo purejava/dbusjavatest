@@ -70,10 +70,10 @@ public interface KWallet extends DBusInterface {
         }
     }
 
-    public class FolderListUpdated extends DBusSignal {
+    public class folderListUpdated extends DBusSignal {
         public final String wallet;
 
-        public FolderListUpdated(String path, String wallet) throws DBusException {
+        public folderListUpdated(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
         }

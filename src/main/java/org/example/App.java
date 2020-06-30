@@ -20,7 +20,7 @@ public class App {
         final List<Class<? extends DBusSignal>> signals = Arrays.asList(
                 KWallet.ApplicationDisconnected.class,
                 KWallet.FolderUpdated.class,
-                KWallet.FolderListUpdated.class,
+                KWallet.folderListUpdated.class,
                 KWallet.AllWalletsClosed.class,
                 KWallet.WalletClosed.class,
                 KWallet.WalletDeleted.class,

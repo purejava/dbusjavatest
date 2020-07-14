@@ -4,6 +4,7 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.handlers.SignalHandler;
 import org.freedesktop.dbus.messages.DBusSignal;
+import org.kde.AbstractInterface;
 import org.kde.KWallet;
 
 import java.io.IOException;
@@ -18,16 +19,17 @@ public class App {
         SignalHandler sh = SignalHandler.getInstance();
 
         final List<Class<? extends DBusSignal>> signals = Arrays.asList(
-                KWallet.ApplicationDisconnected.class,
-                KWallet.FolderUpdated.class,
+                KWallet.applicationDisconnected.class,
+                KWallet.folderUpdated.class,
                 KWallet.folderListUpdated.class,
-                KWallet.AllWalletsClosed.class,
-                KWallet.WalletClosed.class,
-                KWallet.WalletDeleted.class,
-                KWallet.WalletAsyncOpened.class,
-                KWallet.WalletOpened.class,
-                KWallet.WalletCreated.class,
-                KWallet.WalletListDirty.class);
+                AbstractInterface.walletClosed.class,
+                KWallet.walletClosed.class,
+                KWallet.allWalletsClosed.class,
+                KWallet.walletDeleted.class,
+                KWallet.walletAsyncOpened.class,
+                KWallet.walletOpened.class,
+                KWallet.walletCreated.class,
+                KWallet.walletListDirty.class);
 
         try {
             connection = DBusConnection.getConnection(DBusConnection.DBusBusType.SESSION);
@@ -47,11 +49,12 @@ public class App {
             System.out.println("Handle = " + handle);
             String folder = "Test-Folder";
             boolean created = service.createFolder(handle, folder, appid);
-            System.out.println(Boolean.toString(created));
-            Thread.sleep(3000);
             service.removeFolder(handle, folder, appid);
-            service.close(handle, false, appid);
-        } catch (DBusException | InterruptedException e) {
+            service.close(handle, true, appid);
+            sh.await(KWallet.walletClosed.class, "/modules/kwalletd5", () -> {
+                return null;
+            });
+        } catch (DBusException e) {
             System.out.println(e.toString() + e.getCause());
             exit(-1);
         }

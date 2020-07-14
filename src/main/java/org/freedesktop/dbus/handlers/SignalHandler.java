@@ -4,6 +4,7 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusSigHandler;
 import org.freedesktop.dbus.messages.DBusSignal;
+import org.kde.AbstractInterface;
 import org.kde.KWallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,38 +73,42 @@ public class SignalHandler implements DBusSigHandler {
 
     @Override
     public void handle(DBusSignal s) {
-        System.out.println( "HANDLE");
         Collections.rotate(Arrays.asList(handled), 1);
         handled[0] = s;
         count += 1;
 
-        if (s instanceof KWallet.WalletOpened) {
-            KWallet.WalletOpened wo = (KWallet.WalletOpened) s;
+        if (s instanceof KWallet.walletOpened) {
+            KWallet.walletOpened wo = (KWallet.walletOpened) s;
             System.out.println("KWallet.WalletOpened: " + wo.wallet);
-        } else if (s instanceof KWallet.WalletAsyncOpened) {
-            KWallet.WalletAsyncOpened wo = (KWallet.WalletAsyncOpened) s;
+        } else if (s instanceof KWallet.walletAsyncOpened) {
+            KWallet.walletAsyncOpened wo = (KWallet.walletAsyncOpened) s;
             System.out.println("KWallet.WalletAsyncOpened: " + wo.tId + " / " + wo.handle);
-        } else if (s instanceof KWallet.WalletDeleted) {
-            KWallet.WalletDeleted wd = (KWallet.WalletDeleted) s;
+        } else if (s instanceof KWallet.walletDeleted) {
+            KWallet.walletDeleted wd = (KWallet.walletDeleted) s;
             System.out.println("KWallet.WalletDeleted: " + wd.wallet);
-        } else if (s instanceof KWallet.WalletClosed) {
-            KWallet.WalletClosed wc = (KWallet.WalletClosed) s;
+        } else if (s instanceof AbstractInterface.walletClosed) {
+            System.out.println("A-Interface --> "+s.getInterface());
+            AbstractInterface.walletClosed wc = (AbstractInterface.walletClosed) s;
+            System.out.println("AbstractInterface.WalletClosed: " + wc.handle);
+        } else if (s instanceof KWallet.walletClosed) {
+            KWallet.walletClosed wc = (KWallet.walletClosed) s;
             System.out.println("KWallet.WalletClosed: " + wc.wallet);
-        } else if (s instanceof KWallet.AllWalletsClosed) {
+            System.out.println("W-Interface --> "+s.getInterface());
+        } else if (s instanceof KWallet.allWalletsClosed) {
             System.out.println("KWallet.AllWalletsClosed: " + s.getPath());
         } else if (s instanceof KWallet.folderListUpdated) {
             KWallet.folderListUpdated flu = (KWallet.folderListUpdated) s;
             System.out.println("KWallet.FolderListUpdated: " + flu.wallet);
-        } else if (s instanceof KWallet.FolderUpdated) {
-            KWallet.FolderUpdated fu = (KWallet.FolderUpdated) s;
+        } else if (s instanceof KWallet.folderUpdated) {
+            KWallet.folderUpdated fu = (KWallet.folderUpdated) s;
             System.out.println("KWallet.FolderUpdated: " + fu.a + " / " + fu.b);
-        } else if (s instanceof KWallet.ApplicationDisconnected) {
-            KWallet.ApplicationDisconnected ad = (KWallet.ApplicationDisconnected) s;
+        } else if (s instanceof KWallet.applicationDisconnected) {
+            KWallet.applicationDisconnected ad = (KWallet.applicationDisconnected) s;
             System.out.println("KWallet.ApplicationDisconnected: " + ad.application + " / "+ ad.wallet);
-        } else if (s instanceof KWallet.WalletListDirty) {
+        } else if (s instanceof KWallet.walletListDirty) {
             System.out.println("KWallet.WalletListDirty: " + s.getPath());
-        } else if (s instanceof KWallet.WalletCreated) {
-            KWallet.WalletCreated wc = (KWallet.WalletCreated) s;
+        } else if (s instanceof KWallet.walletCreated) {
+            KWallet.walletCreated wc = (KWallet.walletCreated) s;
             System.out.println("KWallet.WalletCreated: " + wc.wallet);
         } else {
             log.warn("Handled unknown signal: " + s.getClass().toString() + " {" + s.toString() + "}");

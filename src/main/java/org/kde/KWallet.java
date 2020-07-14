@@ -8,64 +8,63 @@ import org.freedesktop.dbus.messages.DBusSignal;
 
 import java.util.List;
 
-@DBusInterfaceName(value = "org.kde.KWallet")
 public interface KWallet extends DBusInterface {
 
-    public static class WalletListDirty extends DBusSignal {
-        public WalletListDirty(String path) throws DBusException {
+    public static class walletListDirty extends DBusSignal {
+        public walletListDirty(String path) throws DBusException {
             super(path);
         }
     }
 
-    public static class WalletCreated extends DBusSignal {
+    public static class walletCreated extends DBusSignal {
         public final String wallet;
 
-        public WalletCreated(String path, String wallet) throws DBusException {
+        public walletCreated(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
         }
     }
 
-    public static class WalletOpened extends DBusSignal {
+    public static class walletOpened extends DBusSignal {
         public final String wallet;
 
-        public WalletOpened(String path, String wallet) throws DBusException {
+        public walletOpened(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
         }
     }
 
-    public static class WalletAsyncOpened extends DBusSignal {
+    public static class walletAsyncOpened extends DBusSignal {
         public final int tId;
         public final int handle;
 
-        public WalletAsyncOpened(String path, int tId, int handle) throws DBusException {
+        public walletAsyncOpened(String path, int tId, int handle) throws DBusException {
             super(path, tId, handle);
             this.tId = tId;
             this.handle = handle;
         }
     }
 
-    public static class WalletDeleted extends DBusSignal {
+    public static class walletDeleted extends DBusSignal {
         public final String wallet;
 
-        public WalletDeleted(String path, String wallet) throws DBusException {
+        public walletDeleted(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
         }
     }
 
-    public static class WalletClosed extends DBusSignal {
+    public static class walletClosed extends DBusSignal {
         public final String wallet;
 
-        public WalletClosed(String path, String wallet) throws DBusException {
+        public walletClosed(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
         }
     }
 
-    public static class AllWalletsClosed extends DBusSignal {
-        public AllWalletsClosed(String path) throws DBusException {
+    public static class allWalletsClosed extends DBusSignal {
+        public allWalletsClosed(String path) throws DBusException {
             super(path);
         }
     }
@@ -79,22 +78,22 @@ public interface KWallet extends DBusInterface {
         }
     }
 
-    public static class FolderUpdated extends DBusSignal {
+    public static class folderUpdated extends DBusSignal {
         public final String a;
         public final String b;
 
-        public FolderUpdated(String path, String a, String b) throws DBusException {
+        public folderUpdated(String path, String a, String b) throws DBusException {
             super(path, a, b);
             this.a = a;
             this.b = b;
         }
     }
 
-    public static class ApplicationDisconnected extends DBusSignal {
+    public static class applicationDisconnected extends DBusSignal {
         public final String wallet;
         public final String application;
 
-        public ApplicationDisconnected(String path, String wallet, String application) throws DBusException {
+        public applicationDisconnected(String path, String wallet, String application) throws DBusException {
             super(path, wallet, application);
             this.wallet = wallet;
             this.application = application;

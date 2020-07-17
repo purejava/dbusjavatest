@@ -4,7 +4,6 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.handlers.SignalHandler;
 import org.freedesktop.dbus.messages.DBusSignal;
-import org.kde.AbstractInterface;
 import org.kde.KWallet;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ public class App {
                 KWallet.applicationDisconnected.class,
                 KWallet.folderUpdated.class,
                 KWallet.folderListUpdated.class,
-                AbstractInterface.walletClosed.class,
+                KWallet.walletClosedInt.class,
                 KWallet.walletClosed.class,
                 KWallet.allWalletsClosed.class,
                 KWallet.walletDeleted.class,

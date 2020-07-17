@@ -1,6 +1,7 @@
 package org.kde;
 
 import org.freedesktop.dbus.annotations.DBusInterfaceName;
+import org.freedesktop.dbus.annotations.DBusMemberName;
 import org.freedesktop.dbus.annotations.MethodNoReply;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusInterface;
@@ -60,6 +61,16 @@ public interface KWallet extends DBusInterface {
         public walletClosed(String path, String wallet) throws DBusException {
             super(path, wallet);
             this.wallet = wallet;
+        }
+    }
+
+    @DBusMemberName(value = "walletClosed")
+    public static class walletClosedInt extends DBusSignal {
+        public final int handle;
+
+        public walletClosedInt(String path, int handle) throws DBusException {
+            super(path, handle);
+            this.handle = handle;
         }
     }
 

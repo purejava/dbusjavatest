@@ -4,7 +4,6 @@ import org.freedesktop.dbus.connections.impl.DBusConnection;
 import org.freedesktop.dbus.exceptions.DBusException;
 import org.freedesktop.dbus.interfaces.DBusSigHandler;
 import org.freedesktop.dbus.messages.DBusSignal;
-import org.kde.AbstractInterface;
 import org.kde.KWallet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,14 +85,14 @@ public class SignalHandler implements DBusSigHandler {
         } else if (s instanceof KWallet.walletDeleted) {
             KWallet.walletDeleted wd = (KWallet.walletDeleted) s;
             System.out.println("KWallet.WalletDeleted: " + wd.wallet);
-        } else if (s instanceof AbstractInterface.walletClosed) {
+        } else if (s instanceof KWallet.walletClosedInt) {
             System.out.println("A-Interface --> "+s.getInterface());
-            AbstractInterface.walletClosed wc = (AbstractInterface.walletClosed) s;
-            System.out.println("AbstractInterface.WalletClosed: " + wc.handle);
+            KWallet.walletClosedInt wc = (KWallet.walletClosedInt) s;
+            System.out.println("KWallet.walletClosedInt: " + wc.handle);
         } else if (s instanceof KWallet.walletClosed) {
+            System.out.println("W-Interface --> "+s.getInterface());
             KWallet.walletClosed wc = (KWallet.walletClosed) s;
             System.out.println("KWallet.WalletClosed: " + wc.wallet);
-            System.out.println("W-Interface --> "+s.getInterface());
         } else if (s instanceof KWallet.allWalletsClosed) {
             System.out.println("KWallet.AllWalletsClosed: " + s.getPath());
         } else if (s instanceof KWallet.folderListUpdated) {

@@ -44,7 +44,7 @@ public class SignalHandler implements DBusSigHandler {
                 for (Class sc : signals) {
                     if (!registered.contains(sc)) {
                         connection.addSigHandler(sc, this);
-                        System.out.println("Connecting Signal " + sc.toString());
+                        log.info("Connecting Signal " + sc.toString());
                         this.registered.add(sc);
                     }
                 }
@@ -78,37 +78,37 @@ public class SignalHandler implements DBusSigHandler {
 
         if (s instanceof KWallet.walletOpened) {
             KWallet.walletOpened wo = (KWallet.walletOpened) s;
-            System.out.println("KWallet.WalletOpened: " + wo.wallet);
+            log.info("KWallet.WalletOpened: " + wo.wallet);
         } else if (s instanceof KWallet.walletAsyncOpened) {
             KWallet.walletAsyncOpened wo = (KWallet.walletAsyncOpened) s;
-            System.out.println("KWallet.WalletAsyncOpened: " + wo.tId + " / " + wo.handle);
+            log.info("KWallet.WalletAsyncOpened: " + wo.tId + " / " + wo.handle);
         } else if (s instanceof KWallet.walletDeleted) {
             KWallet.walletDeleted wd = (KWallet.walletDeleted) s;
-            System.out.println("KWallet.WalletDeleted: " + wd.wallet);
-        } else if (s instanceof KWallet.walletClosedInt) {
-            System.out.println("A-Interface --> "+s.getInterface());
-            KWallet.walletClosedInt wc = (KWallet.walletClosedInt) s;
-            System.out.println("KWallet.walletClosedInt: " + wc.handle);
+            log.info("KWallet.WalletDeleted: " + wd.wallet);
+        } else if (s instanceof KWallet.walletClosedId) {
+            log.info("Id-Interface --> "+s.getInterface());
+            KWallet.walletClosedId wc = (KWallet.walletClosedId) s;
+            log.info("KWallet.walletClosedId: " + wc.handle);
         } else if (s instanceof KWallet.walletClosed) {
-            System.out.println("W-Interface --> "+s.getInterface());
+            log.info("wC-Interface --> "+s.getInterface());
             KWallet.walletClosed wc = (KWallet.walletClosed) s;
-            System.out.println("KWallet.WalletClosed: " + wc.wallet);
+            log.info("KWallet.WalletClosed: " + wc.wallet);
         } else if (s instanceof KWallet.allWalletsClosed) {
-            System.out.println("KWallet.AllWalletsClosed: " + s.getPath());
+            log.info("KWallet.AllWalletsClosed: " + s.getPath());
         } else if (s instanceof KWallet.folderListUpdated) {
             KWallet.folderListUpdated flu = (KWallet.folderListUpdated) s;
-            System.out.println("KWallet.FolderListUpdated: " + flu.wallet);
+            log.info("KWallet.FolderListUpdated: " + flu.wallet);
         } else if (s instanceof KWallet.folderUpdated) {
             KWallet.folderUpdated fu = (KWallet.folderUpdated) s;
-            System.out.println("KWallet.FolderUpdated: " + fu.a + " / " + fu.b);
+            log.info("KWallet.FolderUpdated: " + fu.a + " / " + fu.b);
         } else if (s instanceof KWallet.applicationDisconnected) {
             KWallet.applicationDisconnected ad = (KWallet.applicationDisconnected) s;
-            System.out.println("KWallet.ApplicationDisconnected: " + ad.application + " / "+ ad.wallet);
+            log.info("KWallet.ApplicationDisconnected: " + ad.application + " / "+ ad.wallet);
         } else if (s instanceof KWallet.walletListDirty) {
-            System.out.println("KWallet.WalletListDirty: " + s.getPath());
+            log.info("KWallet.WalletListDirty: " + s.getPath());
         } else if (s instanceof KWallet.walletCreated) {
             KWallet.walletCreated wc = (KWallet.walletCreated) s;
-            System.out.println("KWallet.WalletCreated: " + wc.wallet);
+            log.info("KWallet.WalletCreated: " + wc.wallet);
         } else {
             log.warn("Handled unknown signal: " + s.getClass().toString() + " {" + s.toString() + "}");
         }
@@ -167,7 +167,7 @@ public class SignalHandler implements DBusSigHandler {
         int init = getHandledSignals(s, path).size();
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        System.out.println("await signal " + s.getName() + "(" + path + ") within " + timeout.getSeconds() + " seconds.");
+        log.info("await signal " + s.getName() + "(" + path + ") within " + timeout.getSeconds() + " seconds.");
 
         final Future<S> handler = executor.submit((Callable) () -> {
             int await = init;

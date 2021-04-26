@@ -64,11 +64,10 @@ public interface KWallet extends DBusInterface {
         }
     }
 
-    @DBusMemberName(value = "walletClosed")
-    public static class walletClosedInt extends DBusSignal {
+    public static class walletClosedId extends DBusSignal {
         public final int handle;
 
-        public walletClosedInt(String path, int handle) throws DBusException {
+        public walletClosedId(String path, int handle) throws DBusException {
             super(path, handle);
             this.handle = handle;
         }
